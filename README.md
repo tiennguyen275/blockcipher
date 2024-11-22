@@ -10,5 +10,15 @@
 ## Cách sử dụng
 
 1. Biên dịch chương trình:
-   ```bash
    g++ -o BlockCipher main.cpp
+2. Chạy chương trình:
+   ./BlockCipher
+
+## Ví dụ chạy chương trình:
+   Nhập độ dài khối: 4<br>
+   Nhập khóa hoán vị (4 số, từ 0 đến 3): 1 3 2 0<br>
+   Nhập bản rõ: HELLO<br>
+   Bản mã: EHOLL<br><br>
+
+   Nhập bản mã: EHOLL<br>
+   Bản giải mã: HELLO
