@@ -86,5 +86,6 @@ int main() {
     string banGiaiMa = giaiMa(banMa, khoa);
     cout << "Ban giai ma: " << banGiaiMa << endl;
 
+    cin.get();
     return 0;
 }
