@@ -1,91 +1,63 @@
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-// Hàm mã hóa
-string maHoa(const string& banRo, const vector<int>& khoa) {
-    int doDaiKhoi = khoa.size();
-    string ketQua = "";
-
-    for (size_t i = 0; i < banRo.size(); i += doDaiKhoi) {
-        string khoi = banRo.substr(i, doDaiKhoi);
-        if (khoi.size() < doDaiKhoi) {
-            khoi.append(doDaiKhoi - khoi.size(), 'X'); // Thêm padding
-        }
-        string khoiMaHoa(doDaiKhoi, ' ');
-        for (int j = 0; j < doDaiKhoi; j++) {
-            khoiMaHoa[j] = khoi[khoa[j]];
-        }
-        ketQua += khoiMaHoa;
+// Mã hóa: Hoán vị các ký tự trong bản rõ theo khóa hoán vị
+string encrypt(const string &input, const vector<int> &key) {
+    string result(input.size(), ' '); // Chuỗi kết quả có độ dài giống bản rõ
+    for (size_t i = 0; i < key.size(); ++i) {
+        result[i] = input[key[i]];
     }
-    return ketQua;
+    return result;
 }
 
-// Hàm giải mã
-string giaiMa(const string& banMa, const vector<int>& khoa) {
-    int doDaiKhoi = khoa.size();
-    string ketQua = "";
-    vector<int> khoaNguoc(doDaiKhoi);
-
-    for (int i = 0; i < doDaiKhoi; i++) {
-        khoaNguoc[khoa[i]] = i;
+// Giải mã: Hoán vị ngược lại các ký tự trong bản mã theo khóa hoán vị
+string decrypt(const string &input, const vector<int> &key) {
+    string result(input.size(), ' '); // Chuỗi kết quả có độ dài giống bản mã
+    for (size_t i = 0; i < key.size(); ++i) {
+        result[key[i]] = input[i];
     }
-
-    for (size_t i = 0; i < banMa.size(); i += doDaiKhoi) {
-        string khoi = banMa.substr(i, doDaiKhoi);
-        string khoiGiaiMa(doDaiKhoi, ' ');
-        for (int j = 0; j < doDaiKhoi; j++) {
-            khoiGiaiMa[j] = khoi[khoaNguoc[j]];
-        }
-        ketQua += khoiGiaiMa;
-    }
-    return ketQua;
-}
-
-// Hàm nhập khóa hoán vị
-void nhapKhoa(vector<int>& khoa, int doDaiKhoi) {
-    cout << "Nhap khoa hoan vi (" << doDaiKhoi << " so, tu 0 den " << doDaiKhoi - 1 << "): ";
-    for (int i = 0; i < doDaiKhoi; i++) {
-        cin >> khoa[i];
-        if (khoa[i] < 0 || khoa[i] >= doDaiKhoi) {
-            cout << "Khoa khong hop le!\n";
-            exit(1);
-        }
-    }
-}
-
-// Hàm nhập chuỗi
-string nhapChuoi(const string& thongBao) {
-    cin.ignore(); // Xóa bộ đệm
-    cout << thongBao;
-    string chuoi;
-    getline(cin, chuoi);
-    return chuoi;
+    return result;
 }
 
 int main() {
-    // Nhập độ dài khối
-    int doDaiKhoi;
-    cout << "Nhap do dai khoi: ";
-    cin >> doDaiKhoi;
+    // Thiết lập console sử dụng mã hóa UTF-8
+    system("chcp 65001");  // Set terminal to UTF-8 encoding
 
-    // Nhập khóa hoán vị
-    vector<int> khoa(doDaiKhoi);
-    nhapKhoa(khoa, doDaiKhoi);
+    // Nhập độ dài khối và khóa hoán vị
+    int n;
+    cout << "Nhập độ dài khối: ";
+    cin >> n;
+
+    vector<int> key(n);
+    cout << "Nhập khóa hoán vị (" << n << " số, từ 0 đến " << n - 1 << "): ";
+    for (int i = 0; i < n; ++i) {
+        cin >> key[i];
+    }
 
     // Nhập bản rõ
-    string banRo = nhapChuoi("Nhap ban ro: ");
+    string plaintext;
+    cin.ignore(); // Loại bỏ ký tự xuống dòng
+    cout << "Nhập bản rõ: ";
+    getline(cin, plaintext);  // Đọc dòng vào với kiểu string
 
-    // Mã hóa
-    string banMa = maHoa(banRo, khoa);
-    cout << "Ban ma: " << banMa << endl;
+    // Đảm bảo độ dài bản rõ phù hợp với khóa hoán vị
+    if (plaintext.size() < n) {
+        cout << "Lưu ý: Độ dài bản rõ ngắn hơn khóa hoán vị. Đang thêm khoảng trắng." << endl;
+        plaintext.append(n - plaintext.size(), ' '); // Thêm khoảng trắng nếu cần
+    }
 
-    // Giải mã
-    string banGiaiMa = giaiMa(banMa, khoa);
-    cout << "Ban giai ma: " << banGiaiMa << endl;
+    // Mã hóa và giải mã
+    string ciphertext = encrypt(plaintext, key);
+    cout << "Bản mã: " << ciphertext << endl;
 
+    string decryptedtext = decrypt(ciphertext, key);
+    cout << "Bản giải mã: " << decryptedtext << endl;
+
+    cout << "Ấn để thoát chương trình.";
     cin.get();
+    
     return 0;
 }
