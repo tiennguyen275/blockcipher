@@ -25,11 +25,11 @@ string localPermutationEncrypt(const string& plaintext, const vector<int>& key, 
         }
 
         // In ra khóa hoán vị và khối mã hóa
-        cout << "Khối thứ " << block_count << ": \"" << block << "\" -> khóa hoán vị: [";
-        for (int k : key) {
-            cout << k << " ";
+        cout << "Khối mã hóa " << block_count << ": \"" << block << "\" hoán vị theo khóa [";
+        for (int k = 0; k < block_size; ++k) {
+            cout << key[k] << (k < block_size - 1 ? ", " : ""); // In khóa với dấu phẩy giữa các phần tử
         }
-        cout << "] -> khối mã hóa: \"" << encrypted_block << "\"" << endl;
+        cout << "] thành \"" << encrypted_block << "\"." << endl;
 
         ciphertext += encrypted_block;  // Thêm khối đã mã hóa vào bản mã
         block_count++;
@@ -55,11 +55,11 @@ string localPermutationDecrypt(const string& ciphertext, const vector<int>& key,
         }
 
         // In ra khóa hoán vị và khối giải mã
-        cout << "Khối mã hóa " << block_count << ": \"" << block << "\" -> khóa hoán vị: [ ";
-        for (int k : key) {
-            cout << k << " ";
+        cout << "Khối mã hóa " << block_count << ": \"" << block << "\" hoán vị theo khóa [";
+        for (int k = 0; k < block_size; ++k) {
+            cout << key[k] << (k < block_size - 1 ? ", " : ""); // In khóa với dấu phẩy giữa các phần tử
         }
-        cout << "] -> khối giải mã: \"" << decrypted_block << "\"" << endl;
+        cout << "] thành \"" << decrypted_block << "\"." << endl;
 
         plaintext += decrypted_block;  // Thêm khối đã giải mã vào bản rõ
         block_count++;
