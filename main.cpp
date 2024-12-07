@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <windows.h>
 
 using namespace std;
 
@@ -9,7 +8,8 @@ using namespace std;
 string localPermutationEncrypt(const string& plaintext, const vector<int>& key, int block_size) {
     string ciphertext = "";
     int n = plaintext.size();
-    
+    int block_count = 1;
+
     // Chia bản rõ thành các khối và mã hóa từng khối
     for (int i = 0; i < n; i += block_size) {
         string block = plaintext.substr(i, block_size);
@@ -24,7 +24,15 @@ string localPermutationEncrypt(const string& plaintext, const vector<int>& key, 
             encrypted_block[j] = block[key[j]];  // Hoán vị các ký tự theo khóa
         }
 
+        // In ra khóa hoán vị và khối mã hóa
+        cout << "Khối thứ " << block_count << ": \"" << block << "\" -> khóa hoán vị: [";
+        for (int k : key) {
+            cout << k << " ";
+        }
+        cout << "] -> khối mã hóa: \"" << encrypted_block << "\"" << endl;
+
         ciphertext += encrypted_block;  // Thêm khối đã mã hóa vào bản mã
+        block_count++;
     }
 
     return ciphertext;
@@ -34,6 +42,7 @@ string localPermutationEncrypt(const string& plaintext, const vector<int>& key, 
 string localPermutationDecrypt(const string& ciphertext, const vector<int>& key, int block_size) {
     string plaintext = "";
     int n = ciphertext.size();
+    int block_count = 1;
 
     // Chia bản mã thành các khối và giải mã từng khối
     for (int i = 0; i < n; i += block_size) {
@@ -45,17 +54,21 @@ string localPermutationDecrypt(const string& ciphertext, const vector<int>& key,
             decrypted_block[key[j]] = block[j];  // Hoán vị lại các ký tự để lấy bản rõ
         }
 
+        // In ra khóa hoán vị và khối giải mã
+        cout << "Khối mã hóa " << block_count << ": \"" << block << "\" -> khóa hoán vị: [ ";
+        for (int k : key) {
+            cout << k << " ";
+        }
+        cout << "] -> khối giải mã: \"" << decrypted_block << "\"" << endl;
+
         plaintext += decrypted_block;  // Thêm khối đã giải mã vào bản rõ
+        block_count++;
     }
 
     return plaintext;
 }
 
 int main() {
-    system("chcp 65001");
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
-
     // Nhập độ dài khối và khóa hoán vị
     int block_size;
     cout << "Nhập độ dài khối: ";
@@ -75,11 +88,11 @@ int main() {
 
     // Mã hóa
     string ciphertext = localPermutationEncrypt(plaintext, key, block_size);
-    cout << "Bản mã: " << ciphertext << endl;
+    cout << "Bản mã hoàn chỉnh: " << ciphertext << endl;
 
     // Giải mã
     string decryptedtext = localPermutationDecrypt(ciphertext, key, block_size);
-    cout << "Bản giải mã: " << decryptedtext << endl;
+    cout << "Bản giải mã hoàn chỉnh: " << decryptedtext << endl;
 
     cout << "Ấn phím bất kỳ để thoát chương trình";
     cin.get();
