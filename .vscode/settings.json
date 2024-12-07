@@ -4,5 +4,13 @@
         ".fantomasignore": "ignore",
         "iostream": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
+    "terminal.integrated.defaultProfile.windows": "Command Prompt", // Hoặc Git Bash
+    "terminal.integrated.env.windows": {
+        "LANG": "en_US.UTF-8"
+    },
+    "terminal.integrated.shellArgs.windows": [
+        "/K", "chcp 65001"
+    ]
 }
